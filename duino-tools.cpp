@@ -1,20 +1,26 @@
 #include <Arduino.h>
-#include <tools.h>
+#include <duino-tools.h>
 
-// char * CRLF = "\r\n";
+//const char * CRLF = "\r\n";
 
-Print & Console = Serial;
+Print & Debug = Serial;
 
-void initConsole()
+void initDebug(bool waitFor)
 {
 	// Start serial for output
-	Serial.begin(9600);
+ 	Serial.begin(9600);
 
-	// Wait for seril init
+ 	if (waitFor)
+ 	{
+ 	// Wait for seril init
 	while(!Serial) {}
-}
 
-// template<class T> inline Print &operator <<(Print &obj, T arg) { obj.print(arg); return obj; };
+	// Wait for user to start the serial monitor on Teensy
+	#if defined(CORE_TEENSY)
+	while (!Serial.dtr());
+	#endif
+ 	}
+}
 
 int freeRam () 
 {

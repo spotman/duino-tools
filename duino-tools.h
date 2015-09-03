@@ -3,15 +3,24 @@
 
 #include <Arduino.h>
 
-extern Print & Console;
-// extern char * CRLF;
+#ifndef CRLF
+#define CRLF "\r\n"
+#endif
 
+// extern const char * CRLF = "\r\n";
+// extern const char * CRLF;
+extern Print & Debug;
 
-template<class T> inline Print &operator <<(Print &obj, T arg) { obj.print(arg); return obj; };
+template<class T>
+inline Print &operator <<(Print &obj, T arg)
+{
+	obj.print(arg);
+	return obj;
+};
 
 int freeRam();
 
-void initConsole();
+void initDebug(bool waitFor = false);
 
 
 #endif // tools_cpp_
