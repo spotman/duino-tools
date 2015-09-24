@@ -9,17 +9,21 @@
 #define CRLF "\r\n"
 #endif
 
-extern volatile bool debugClassInitialized;
+extern volatile bool debugClassEnabled;
+extern volatile int debugBenchmarkStart;
 
 class DebugClass
 {
   public:
     DebugClass();
-    void init(bool waitFor);
+    void init(const long int speed = 9600, const bool waitFor = true);
     void printFreeRam();
     void printHex8(uint8_t);
     void printHex16(uint16_t);
     // bool isInitialized();
+
+    DebugClass& benchmarkStart(/*const __FlashStringHelper* label*/);
+    DebugClass& benchmarkStop();
 
     template<class T>
     DebugClass& operator <<(T arg);
@@ -36,7 +40,7 @@ class DebugClass
 template<class T>
 inline DebugClass& DebugClass::operator <<(T arg)
 {
-  if (debugClassInitialized)
+  if (debugClassEnabled)
   {
     Serial.print(arg);
   }
@@ -46,7 +50,7 @@ inline DebugClass& DebugClass::operator <<(T arg)
 
 inline DebugClass& DebugClass::operator <<(uint8_t arg)
 {
-  if (debugClassInitialized)
+  if (debugClassEnabled)
   {
     this->printHex8(arg);
   }
@@ -56,7 +60,7 @@ inline DebugClass& DebugClass::operator <<(uint8_t arg)
 
 inline DebugClass& DebugClass::operator <<(uint16_t arg)
 {
-  if (debugClassInitialized)
+  if (debugClassEnabled)
   {
     this->printHex16(arg);
   }
@@ -80,9 +84,9 @@ inline void DebugClass::printHex16(uint16_t value) {
 extern DebugClass Debug;
 
 // Shortcut for Debig::init()
-inline void initDebug(bool waitFor = true)
+inline void initDebug(const long int speed = 9600, const bool waitFor = true)
 {
-  Debug.init(waitFor);
+  Debug.init(speed, waitFor);
 }
 
 #endif // DUINO_TOOLS_DEBUG_H_

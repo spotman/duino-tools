@@ -13,7 +13,7 @@ class HardwareAddressDetector
 /**
   * Returns zero-based address defined with 4-channel DIP-switch (or simply 4 jumpers)
   */
-unsigned char HardwareAddressDetector::get(const char p1 = 0, const char p2 = 0, const char p3 = 0, const char p4 = 0)
+inline unsigned char HardwareAddressDetector::get(const char p1 = 0, const char p2 = 0, const char p3 = 0, const char p4 = 0)
 {
   const char pins[] = {p1, p2, p3, p4};
   const char pinsCount = sizeof(pins);
