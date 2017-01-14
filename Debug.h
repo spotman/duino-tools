@@ -15,9 +15,15 @@ extern volatile int debugBenchmarkStart;
 class DebugClass
 {
   public:
+    int startMemoryUsage;
+    int lastMemoryUsage;
+
     DebugClass();
     void init(const long int speed = 9600, const bool waitFor = true);
-    void printFreeRam();
+
+    template<class T>
+    void printFreeRam(T label);
+
     void printHex8(uint8_t);
     void printHex16(uint16_t);
     // bool isInitialized();
@@ -78,6 +84,16 @@ inline void DebugClass::printHex16(uint16_t value) {
   char tmp[16];
   sprintf(tmp, "0x%.4X", value);
   Serial.print(tmp);
+}
+
+template<class T>
+inline void DebugClass::printFreeRam(T label)
+{
+  int currentUsage = getFreeRam();
+
+  *this << F("Free RAM is ") <<  currentUsage << F(" (") << (currentUsage - this->lastMemoryUsage) << F(" from last call, ") << (currentUsage - this->startMemoryUsage) << F(" from start)") << F(" [") << label << F("]") << CRLF;
+
+  this->lastMemoryUsage = currentUsage;
 }
 
 // Populate global variable for debug

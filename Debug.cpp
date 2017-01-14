@@ -30,6 +30,8 @@ void DebugClass::init(const long int speed, const bool waitFor)
     #endif
   }
 
+  this->startMemoryUsage = getFreeRam();
+
   // this->initialized = true;
   debugClassInitialized = true;
 
@@ -82,15 +84,10 @@ DebugClass& DebugClass::benchmarkStop()
   return *this;
 }
 
-
 // inline bool DebugClass::isInitialized()
 // {
 //   return this->initialized;
 // }
 
-void DebugClass::printFreeRam()
-{
-  *this << F("Free RAM is: ") <<  getFreeRam() << CRLF;
-}
 
 DebugClass Debug;
